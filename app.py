@@ -68,7 +68,6 @@ if __name__ == '__main__':
 #python text to insert data
 #insert_policy(policy_name='File-Restriction', tenant='TACC', subject='developer007', policy_description='Restricts developer access to Files', action='database connection', created_by='Hank Hill',policy_type='Network', policy_schema='version 3', uuid='j478y4h007', resource={'network': 'File-db', 'Files': 'database-2'}, decision='allow', owner='JTallas', project='Test Policy Project')
 
-#cur.execute(Adding text for testing on git)
 
 #cur.execute("""CREATE TABLE policies(policy_id SERIAL PRIMARY KEY, policy_name VARCHAR(100) NOT NULL, tenant VARCHAR(100)NOT NULL, subject VARCHAR(100) NOT NULL, policy_description VARCHAR(2048), action VARCHAR(50), created_by VARCHAR(100) NOT NULL, policy_type VARCHAR(50) NOT NULL, policy_schema VARCHAR(100) NOT NULL, uuid VARCHAR(64) NOT NULL, resource JSON, decision decision_enum NOT NULL, created timestamp without time zone NOT NULL DEFAULT(now() at time zone 'utc'), last_updated timestamp without time zone NOT NULL DEFAULT(now() at time zone 'utc'));""")
 
