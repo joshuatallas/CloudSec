@@ -1,0 +1,16 @@
+
+
+{ 
+    "policy_name": "Test Policy with Auto UUID",
+    "tenant": "TACC",
+    "subject": "test_user",
+    "policy_description": "Test policy for API testing with auto-generated UUID",
+    "action": "allow",
+    "created_by": "JTallas",
+    "policy_type": "test type",
+    "policy_schema": "v1",
+    "resource": "api/v1/test",
+    "decision": "allow",
+    "owner": "test_team",
+    "project": "test_project"
+}
