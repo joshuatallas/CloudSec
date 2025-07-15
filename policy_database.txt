@@ -16,7 +16,7 @@ CREATE TABLE policies_test (
     created 		timestamp without time zone NOT NULL DEFAULT(now() at time zone'utc'),
     policy_type	 	character varying(50) NOT NULL,
     policy_schema 	character varying(100) NOT NULL,
-    uuid                character varying(64) NOT NULL, 
+    uuid                UUID DEFAULT gen_random_uuid(), 
     last_updated 	timestamp without time zone NOT NULL DEFAULT(now() at time zone'utc')
 );
 
