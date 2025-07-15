@@ -152,24 +152,24 @@ def search_policies():
 
 
 
-@app.route('/policies/<policy_id>', methods=['DELETE'])
-def delete_policy(policy_id):
+@app.route('/policies/<int:uuid>', methods=['DELETE'])
+def delete_policy(uuid):
 
     conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='localhost' port='5433'")
     cur = conn.cursor()
 
 
-    cur.execute("DELETE FROM policies WHERE policy_id = %s", (policy_id,))
+    cur.execute("DELETE FROM policies WHERE uuid = %s", (uuid,))
     conn.commit()
     return "Policy deleted"
 
-@app.route('/policies/<int:policy_id>', methods=['GET'])
-def get_policy(policy_id):
+@app.route('/policies/<int:uuid>', methods=['GET'])
+def get_policy(uuid):
 
     conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='localhost' port='5433'")
     cur = conn.cursor()
 
-    cur.execute("SELECT * FROM policies WHERE policy_id = %s", (policy_id,))
+    cur.execute("SELECT * FROM policies WHERE uuid = %s", (uuid,))
     conn.commit()
     policies = cur.fetchone()
     return str(policy)

@@ -1,6 +1,16 @@
+
+
+
+
+
+
+DROP TABLE IF EXISTS policies;
+
+
 CREATE TYPE decision_enum AS ENUM ('allow', 'deny');
 
-CREATE TABLE policies_test (
+
+CREATE TABLE IF NOT EXISTS policies (
     policy_id           SERIAL PRIMARY KEY,
     policy_name         character varying(100) NOT NULL,
     tenant              character varying(100) NOT NULL,
