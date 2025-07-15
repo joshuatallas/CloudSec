@@ -48,7 +48,7 @@ def insert_policy():
         ) VALUES (
             %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
         ) RETURNING *;
-    """, (
+    """), (
         policy_name,
         tenant,
         subject,
@@ -60,10 +60,8 @@ def insert_policy():
         resource,
         decision,
         owner,
-        project
-        created_by,
-        policy_type,   
-        ))
+        project   
+        )
 
     conn.commit()
     return jsonify({"message": "Policy created successfully"
@@ -75,50 +73,70 @@ def insert_policy():
 def search_policies():
 
     conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='localhost' port='5433'")
-    cur
 
-    fields = "policy_name,policy_id,decision,tenant,uuid"
+    fields = "policy_name,tenant,subject,policy_description,action,created_by,policy_type,policy_schema,resource,decision,owner,uuid,project,created"     
     policy_columns = fields.split(',')
 
-    policy_id = request.args.get('policy_id')
-    decision = request.args.get('decision')
-    tenant = request.args.get('tenant')
-    uuid = request.args.get('uuid')
     policy_name = request.args.get('policy_name')
-    #project = request.args.get('project')
-    #owner = request.args.get('owner')
-    #policy_description = request.args.get('policy_description')
-    #created = request.args.get('created')
+    tenant = request.args.get('tenant')
+    subject = request.args.get('subject')
+    policy_description = request.args.get('policy_description')
+    action = request.args.get('action')
+    created_by = request.args.get('created_by')
+    policy_type = request.args.get('policy_type')
+    policy_schema = request.args.get('policy_schema')
+    resource = request.args.get('resource')
+    decision = request.args.get('decision')
+    owner = request.args.get('owner')
+    uuid = request.args.get('uuid')
+    project = request.args.get('project')
+    created = request.args.get('created')
 
     query = f"SELECT {fields} FROM policies WHERE 1=1"
     params = []
 
-    if policy_id:
-        query += " AND policy_id = %s"
-        params.append(policy_id)
-    if decision:
-        query += " AND decision = %s"
-        params.append(decision)
+    if policy_name:
+        query +=  " AND policy_name = %s"
+        params.append(policy_name)
     if tenant:
         query += " AND tenant = %s"
         params.append(tenant)
+    if subject:
+        query += " AND subject = %s"
+        params.append(subject)
+    if policy_description:
+        query += " AND policy_description = %s"
+        params.append(policy_description)
+    if action:
+        query += " AND action = %s"
+        params.append(action)
+    if created_by:
+        query += " AND created_by = %s"
+        params.append(created_by)
+    if policy_type:
+        query += " AND policy_type = %s"
+        params.append(policy_type)
+    if policy_schema:
+        query += " AND policy_schema = %s"
+        params.append(policy_schema)
+    if resource:
+        query += " AND resource = %s"
+        params.append(resource)
+    if decision:
+        query += " AND decision = %s"
+        params.append(decision)
+    if owner:
+        query += " AND owner = %s"
+        params.append(owner)
     if uuid:
         query += " AND uuid = %s"
-    if policy_name:
-        query += " AND policy_name = %s"
-        params.append(policy_name)
-   # if project:
-   #     query += " AND project = %s"
-   #     params.append(project)
-   # if owner:
-   #     query += " AND owner = %s"
-   #     params.append(owner)
-   # if policy_description:
-   #     query += " AND policy_description = %s"
-   #     params.append(policy_description)
-   # if created:
-   #     query += " AND created = %s"
-   #     params.append(created)
+        params.append(uuid)
+    if project:
+        query += " AND project = %s"
+        params.append(project)
+    if created:
+        query += " AND created = %s"
+        params.append(created)
 
 
     cur.execute(query, params)
