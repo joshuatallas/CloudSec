@@ -152,7 +152,7 @@ def search_policies():
 
 
 
-@app.route('/policies/<int:uuid>', methods=['DELETE'])
+@app.route('/policies/<uuid>', methods=['DELETE'])
 def delete_policy(uuid):
 
     conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='localhost' port='5433'")
@@ -163,16 +163,23 @@ def delete_policy(uuid):
     conn.commit()
     return "Policy deleted"
 
-@app.route('/policies/<int:uuid>', methods=['GET'])
+@app.route('/policies/<uuid>', methods=['GET'])
 def get_policy(uuid):
 
     conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='localhost' port='5433'")
     cur = conn.cursor()
+    fields = "policy_name,tenant,subject,policy_description,action,created_by,policy_type,policy_schema,resource,decision,owner,uuid,project,created"
+    
+    policy_columns = fields.split(',')
+    cur.execute(f"SELECT {fields} FROM policies WHERE uuid = %s", (uuid,))
 
-    cur.execute("SELECT * FROM policies WHERE uuid = %s", (uuid,))
-    conn.commit()
-    policies = cur.fetchone()
-    return str(policy)
+  
+    policy = cur.fetchone()
+    policy_dict = dict(zip(policy_columns, policy))
+
+
+    return jsonify({'policy': policy_dict})
+
 
 """@app.route('/policies/owner/<owner>', methods=['GET'])
 def get_policies_owner(owner):
