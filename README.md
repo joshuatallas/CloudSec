@@ -12,13 +12,11 @@ This project provides a RESTful API for managing policy data in a PostgreSQL dat
 - PostgreSQL database integration
 - Docker support for easy deployment
 
-## Installation
-
 ### Prerequisites
 
 - Python 3.9+
 - PostgreSQL
-- Docker (optional)
+- Docker
 
 
 ## Contact
