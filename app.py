@@ -48,7 +48,7 @@ def insert_policy():
         ) VALUES (
             %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
         ) RETURNING *;
-    """), (
+    """, (
         policy_name,
         tenant,
         subject,
@@ -61,12 +61,12 @@ def insert_policy():
         decision,
         owner,
         project   
-        )
+        ))
 
     conn.commit()
-    return jsonify({"message": "Policy created successfully"
-        
-        })
+    return jsonify({
+        "message": "Policy created successfully",    
+    })
         
 
 @app.route('/policies/search', methods=['GET'])
@@ -158,11 +158,8 @@ def delete_policy(uuid):
     conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='localhost' port='5433'")
     cur = conn.cursor()
 
-
-    fields = "policy_name,tenant,subject,policy_description,action,created_by,policy_type,policy_schema,resource,decision,owner,uuid,project,created"
-
-    policy_columns = fields.split(',')
     cur.execute(f"DELETE FROM policies WHERE uuid = %s", (uuid,))
+
     conn.commit()
 
     return jsonify({'message': f'Policy deleted successfully'})   
@@ -173,28 +170,27 @@ def get_policy(uuid):
 
     conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='localhost' port='5433'")
     cur = conn.cursor()
-    fields = "policy_name,tenant,subject,policy_description,action,created_by,policy_type,policy_schema,resource,decision,owner,uuid,project,created"
-    
+
+    fields = "policy_name,tenant,subject,policy_description,action,created_by,policy_type,policy_schema,resource,decision,owner,uuid,project,created"    
+
     policy_columns = fields.split(',')
     cur.execute(f"SELECT {fields} FROM policies WHERE uuid = %s", (uuid,))
 
-  
     policy = cur.fetchone()
     policy_dict = dict(zip(policy_columns, policy))
-
 
     return jsonify({'policy': policy_dict})
 
 
-"""@app.route('/policies/owner/<owner>', methods=['GET'])
-def get_policies_owner(owner):
+#@app.route('/policies/owner/<owner>', methods=['GET'])
+#def get_policies_owner(owner):
 
     #conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='localhost' port='5433'")
     #cur = conn.cursor()
 
    # cur.execute("SELECT * FROM policies WHERE owner = %s;", (owner,))
    # policies = cur.fetchall() 
-   # return str(policies)"""
+   # return str(policies)
 
 
 
