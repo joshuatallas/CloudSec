@@ -1,10 +1,27 @@
+
+
 version: '3.8'
 
+volumes:
+   pgdata:
+
 services:
-  web:
-    build: .
-    ports:
-      - "5433:5432"
+   db:
+    image: cloudsec_web
+    container_name: jtallas_db_new
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:5432/policy_db
-  
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432" 
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+   
+   web:
+    build: .
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/postgresi 
+    ports:
+      - "5000:5000"
+
