@@ -5,14 +5,13 @@ import json
 
 app = Flask(__name__)
 
-conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='localhost' port='5433'")
-cur = conn.cursor()
-
-
 #cur.execute("CREATE TYPE decision_enum as ENUM ('allow', 'deny');")
 
 @app.route('/policies', methods=['POST'])
 def insert_policy():
+
+    conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='db' port='5432'")
+    cur = conn.cursor()
     
     data = request.get_json()
 
@@ -72,7 +71,7 @@ def insert_policy():
 @app.route('/policies/search', methods=['GET'])
 def search_policies():
 
-    conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='localhost' port='5433'")
+    conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='db' port='5432'")
 
     fields = "policy_name,tenant,subject,policy_description,action,created_by,policy_type,policy_schema,resource,decision,owner,uuid,project,created"     
     policy_columns = fields.split(',')
@@ -150,12 +149,10 @@ def search_policies():
     return jsonify({'policies': result})
 
 
-
-
 @app.route('/policies/<uuid>', methods=['DELETE'])
 def delete_policy(uuid):
 
-    conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='localhost' port='5433'")
+    conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='db' port='5432'")
     cur = conn.cursor()
 
     cur.execute(f"DELETE FROM policies WHERE uuid = %s", (uuid,))
@@ -168,7 +165,7 @@ def delete_policy(uuid):
 @app.route('/policies/<uuid>', methods=['GET'])
 def get_policy(uuid):
 
-    conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='localhost' port='5433'")
+    conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='db' port='5432'")
     cur = conn.cursor()
 
     fields = "policy_name,tenant,subject,policy_description,action,created_by,policy_type,policy_schema,resource,decision,owner,uuid,project,created"    
@@ -197,7 +194,7 @@ def get_policy(uuid):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=True, host='0.0.0.0', port=5000)
 
 
 
