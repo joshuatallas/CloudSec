@@ -2,29 +2,25 @@
 
 
 
-
-
-DROP TABLE IF EXISTS policies;
-
-
 CREATE TYPE decision_enum AS ENUM ('allow', 'deny');
 
-
-CREATE TABLE IF NOT EXISTS policies (
+CREATE TABLE policies (
     policy_id           SERIAL PRIMARY KEY,
     policy_name         character varying(100) NOT NULL,
     tenant              character varying(100) NOT NULL,
     subject             character varying(100) NOT NULL,
     policy_description  character varying(2048),
-    resource            JSON,
     action              character varying(50) NOT NULL,
-    decision            decision_enum NOT NULL,
     created_by          character varying(100) NOT NULL,
-    created             timestamp without time zone NOT NULL DEFAULT(now() at time zone'utc'),
     policy_type         character varying(50) NOT NULL,
     policy_schema       character varying(100) NOT NULL,
-    uuid                UUID DEFAULT gen_random_uuid(),
-    last_updated        timestamp without time zone NOT NULL DEFAULT(now() at time zone'utc')
+    resource            JSON,
+    decision            public.decision_enum,
+    created             timestamp without time zone NOT NULL DEFAULT(now() at time zone'utc'),
+    last_updated        timestamp without time zone NOT NULL DEFAULT(now() at time zone'utc'),
+    owner               character varying(100),
+    project             character varying(100),
+    uuid                UUID DEFAULT gen_random_uuid()
 );
 
 
