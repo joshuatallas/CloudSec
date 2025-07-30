@@ -5,14 +5,12 @@ import json
 
 app = Flask(__name__)
 
-#cur.execute("CREATE TYPE decision_enum as ENUM ('allow', 'deny');")
+
+conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='db' port='5432'")
+cur = conn.cursor()
 
 @app.route('/policies', methods=['POST'])
 def insert_policy():
-
-    conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='db' port='5432'")
-    cur = conn.cursor()
-    
     data = request.get_json()
 
     policy_name = data.get('policy_name')
@@ -72,6 +70,7 @@ def insert_policy():
 def search_policies():
 
     conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='db' port='5432'")
+    cur = conn.cursor()
 
     fields = "policy_name,tenant,subject,policy_description,action,created_by,policy_type,policy_schema,resource,decision,owner,uuid,project,created"     
     policy_columns = fields.split(',')
@@ -177,6 +176,7 @@ def get_policy(uuid):
     policy_dict = dict(zip(policy_columns, policy))
 
     return jsonify({'policy': policy_dict})
+
 
 
 #@app.route('/policies/owner/<owner>', methods=['GET'])

@@ -1,16 +1,19 @@
 
 
 { 
-    "policy_name": "Test Policy with Auto UUID",
+    "policy_name": "Input data testing",
     "tenant": "TACC",
-    "subject": "test_user",
-    "policy_description": "Test policy for API testing with auto-generated UUID",
+    "subject": "test_user_2",
+    "policy_description": "Testing new data input",
     "action": "allow",
-    "created_by": "JTallas",
-    "policy_type": "test type",
-    "policy_schema": "v1",
-    "resource": "api/v1/test",
+    "created_by": "MSimpson",
+    "policy_type": "testing type",
+    "policy_schema": "v4",
+    "resource": "api/v4/test",
     "decision": "allow",
-    "owner": "test_team",
-    "project": "test_project"
+    "owner": "TACC Team",
+    "project": "testing`_project_4"
 }
+
+
+
