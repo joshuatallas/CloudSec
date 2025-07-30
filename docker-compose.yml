@@ -7,8 +7,8 @@ volumes:
 
 services:
    db:
-    image: cloudsec_web
-    container_name: jtallas_db_new
+    image: postgres:17.5
+    container_name: cloudsec_db
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
@@ -17,11 +17,12 @@ services:
       - "5432:5432" 
     volumes:
       - pgdata:/var/lib/postgresql/data
-   
+      - ./create_table.sql:/docker-entrypoint-initdb.d/create_table.sql   
    web:
     build: .
+    container_name: cloudsec_web
     environment:
-      - DATABASE_URL=postgresql://postgres:password@db:5432/postgresi 
+      - DATABASE_URL=postgresql://postgres:password@db:5432/postgres 
     ports:
       - "5000:5000"
 
