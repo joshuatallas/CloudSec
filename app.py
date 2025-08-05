@@ -5,7 +5,6 @@ import json
 
 app = Flask(__name__)
 
-
 conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='db' port='5432'")
 cur = conn.cursor()
 
@@ -69,12 +68,16 @@ def insert_policy():
 @app.route('/policies/search', methods=['GET'])
 def search_policies():
 
+    limit = int(request.args.get('limit', 3))
+    offset = int(request.args.get('offset', 0))
+
     conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='db' port='5432'")
     cur = conn.cursor()
 
-    fields = "policy_name,tenant,subject,policy_description,action,created_by,policy_type,policy_schema,resource,decision,owner,uuid,project,created"     
+    fields = "policy_id,policy_name,tenant,subject,policy_description,action,created_by,policy_type,policy_schema,resource,decision,owner,uuid,project,created"     
     policy_columns = fields.split(',')
 
+    policy_id = request.args.get('policy_id')
     policy_name = request.args.get('policy_name')
     tenant = request.args.get('tenant')
     subject = request.args.get('subject')
@@ -90,9 +93,12 @@ def search_policies():
     project = request.args.get('project')
     created = request.args.get('created')
 
-    query = f"SELECT {fields} FROM policies WHERE 1=1"
+    query = f"SELECT {fields} FROM policies"
     params = []
 
+    if policy_id:
+        query += " AND policy_id = %s"
+        params.append(policy_id)
     if policy_name:
         query +=  " AND policy_name = %s"
         params.append(policy_name)
@@ -136,15 +142,19 @@ def search_policies():
         query += " AND created = %s"
         params.append(created)
 
+    query += " ORDER BY policy_id ASC LIMIT %s OFFSET %s"
+    params.extend([limit, offset])
 
     cur.execute(query, params)
-    policies = cur.fetchall() 
+    policies = cur.fetchall()
 
     result = []
+
     for policy in policies:
         policy_dict = dict(zip(policy_columns, policy))
         result.append(policy_dict)
    
+    conn.commit()
     return jsonify({'policies': result})
 
 
@@ -176,21 +186,6 @@ def get_policy(uuid):
     policy_dict = dict(zip(policy_columns, policy))
 
     return jsonify({'policy': policy_dict})
-
-
-
-#@app.route('/policies/owner/<owner>', methods=['GET'])
-#def get_policies_owner(owner):
-
-    #conn = psycopg.connect("dbname='postgres' user='postgres' password='password' host='localhost' port='5433'")
-    #cur = conn.cursor()
-
-   # cur.execute("SELECT * FROM policies WHERE owner = %s;", (owner,))
-   # policies = cur.fetchall() 
-   # return str(policies)
-
-
-
 
 
 if __name__ == '__main__':
