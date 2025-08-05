@@ -143,7 +143,8 @@ def search_policies():
         params.append(created)
 
     query += " ORDER BY policy_id ASC LIMIT %s OFFSET %s"
-    params.extend([limit, offset])
+    params.append(limit)
+    params.append(offset)
 
     cur.execute(query, params)
     policies = cur.fetchall()
