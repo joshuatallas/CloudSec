@@ -18,6 +18,13 @@ This Policy Database API is a core component of the CloudSec security management
 - RESTful API endpoints for policy management
 - PostgreSQL database integration
 - Docker support for easy deployment
+- CRUD Operations: Create, read, update, delete polcies
+- Pagination
+- Advanced search
+- Field Filtering: Include/exclude specific fields in responses
+
+
+## Installation
 
 ### Prerequisites
 
@@ -25,8 +32,31 @@ This Policy Database API is a core component of the CloudSec security management
 - PostgreSQL
 - Docker
 
+### Using Docker Compose
+Docker Compose is the easiest way to run the entire application stack. It automatically handles container dependencies, networking and data persisence. 
+
+1. Clone the repository
+   git clone https://github.com/joshuatallas/CloudSec.git
+   cd Cloudsec
+
+2. Use the provided 'docker-compose.yml' file
+   This project includes a pre-configured 'docker-compose.yml' file that sets up both the PostgreSQL database and the API.
+
+3. Start the entire stack using
+   docker-compose up -d 
+
+### How to use the API using curl commands
+Basic Search: curl "http://localhost:5000/policies/search?tenant=TACC&decision=allow"
+
+Field Filtering: curl "http://localhost:5000/policies/search?fields=policy_name,tenant,decision&tenant=TACC" 
+
+Pagination: curl "http://localhost:5000/policies/search?limit=0&offset=3"
+
 ## Contact
 
-Email: tallas.joshua@gmail.com
 Github: joshuatallas https://github.com/joshuatallas
 LinkedIn: www.linkedin.com/in/joshua-tallas
+
+## Acknowledgements
+
+*This work has been funded by grants from the National Science Foundation, including the Leadership-Class Computing Facility and Tapis (OAC 1931439).
