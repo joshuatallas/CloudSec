@@ -33,8 +33,8 @@ This Policy Database API is a core component of the CloudSec security management
 - Docker
 
 ### Using Docker Compose
-Docker Compose is the easiest way to run the entire application stack. It automatically handles container dependencies, networking and data persisence. 
-
+Docker Compose is the easiest way to run the entire application stack. It automatically handles container dependencies, networking and data persistence.
+ 
 1. Clone the repository
    git clone https://github.com/joshuatallas/CloudSec.git
    cd Cloudsec
@@ -50,7 +50,31 @@ Basic Search: curl "http://localhost:5000/policies/search?tenant=TACC&decision=a
 
 Field Filtering: curl "http://localhost:5000/policies/search?fields=policy_name,tenant,decision&tenant=TACC" 
 
-Pagination: curl "http://localhost:5000/policies/search?limit=0&offset=3"
+Pagination: curl "http://localhost:5000/policies/search?limit=3&offset=0"
+
+### Importing data from a JSON file
+
+1. Create a JSON file and name it "create_policy.json" for example.
+2. Copy this into the JSON file you just created and enter new data in the fields.
+
+ {
+    "policy_name": "Admin Access Policy",
+    "tenant": "TACC",
+    "subject": "admin_user",
+    "policy_description": "Full administrative access to all resources",
+    "action": "POST",
+    "created_by": "system_admin",
+    "policy_type": "access",
+    "policy_schema": "v9",
+    "resource": "api/data",
+    "decision": "allow",
+    "owner": "dev_team",
+    "project": "administration"
+  }
+
+3. Import/create new policy data using curl command:
+curl -X POST http://localhost:5000/policies -H "Content-Type: application/json" -d @create_policy.json
+ 
 
 ## Contact
 
