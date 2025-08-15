@@ -11,18 +11,17 @@ CloudSec (cloudsecpy on PyPI) is a library and toolkit for formally analyzing se
 
 ### Description
 
-This Policy Database API is a core component of the CloudSec security management system. It provides the backend infrastructure for managing securit  policies across cloud environments, enabling organizations to define, store,and enforce access control policies.
+This Policy Database API is a core component of the CloudSec security management system. It provides the backend infrastructure for managing security policies across cloud environments, enabling organizations to define, store,and enforce access control policies.
 
 ## Features
 
 - RESTful API endpoints for policy management
 - PostgreSQL database integration
 - Docker support for easy deployment
-- CRUD Operations: Create, read, update, delete polcies
+- CRUD Operations: Create, Read, Update, Delete
 - Pagination
 - Advanced search
 - Field Filtering: Include/exclude specific fields in responses
-
 
 ## Installation
 
@@ -75,7 +74,6 @@ Pagination: curl "http://localhost:5000/policies/search?limit=3&offset=0"
 3. Import/create new policy data using curl command:
 curl -X POST http://localhost:5000/policies -H "Content-Type: application/json" -d @create_policy.json
  
-
 ## Contact
 
 Github: joshuatallas https://github.com/joshuatallas
